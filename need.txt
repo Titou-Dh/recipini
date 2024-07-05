@@ -1,0 +1,15 @@
+colors: {
+    primary: '#FFC107',
+    secondary: '#FFB300',
+    accent: '#FF9800',
+    background: '#FFF8E1',
+    text: '#4E342E',
+    secondaryText: '#757575',
+  },
+
+
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+</style>
+
+font-family: "Caveat", cursive;
