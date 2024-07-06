@@ -1,14 +1,16 @@
 // components/Testimonials.js
+import Image from 'next/image';
+
 const testimonials = [
     {
         name: 'Jane Doe',
-        feedback: 'RecipeShare has transformed the way I cook. The recipes are easy to follow and the community is fantastic!',
-        image: '/images/jane.jpg',
+        feedback: 'Recipini has transformed the way I cook. The recipes are easy to follow and the community is fantastic!',
+        image: '/assets/images/jane.jpg',
     },
     {
         name: 'John Smith',
         feedback: 'I love being able to share my recipes with others and get feedback from fellow food enthusiasts.',
-        image: '/images/john.jpg',
+        image: '/assets/images/jhon.jpg',
     },
 ];
 
