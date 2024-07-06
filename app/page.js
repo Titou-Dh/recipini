@@ -4,6 +4,7 @@ import Features from '@/components/landing/Features';
 import HowItWorks from '@/components/landing/HowItWorks';
 import PopularRecipes from '@/components/landing/PopularRecipes';
 import Testimonials from '@/components/landing/Testimonials';
+import Footer from '@/components/landing/Footer';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <HowItWorks />
       <PopularRecipes />
       <Testimonials />
+      <Footer />
     </>
   );
 }

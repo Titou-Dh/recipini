@@ -9,8 +9,8 @@ const Navbar = () => {
 
     return (
         <nav className="bg-transparent shadow-md ">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-around items-center h-16">
+            <div className=" md:px-32 lg:px-48 px-11 mx-auto  ">
+                <div className="flex justify-between items-center h-16">
                     <div className="flex">
                         <Link className="m-" href="/">
                             <Image src="/assets/images/logo-light.png" alt='logo' height={150} width={120} />
