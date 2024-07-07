@@ -1,7 +1,7 @@
 // pages/api/auth/[...nextauth].js
 import NextAuth from "next-auth";
 import GoogleProvider  from "next-auth/providers/google";
-import { connectToDatabase } from "@/utils/db";
+import { connectToDB } from "@/utils/db";
 import { verifyPassword } from "@/utils/auth";
 
 const handler =  NextAuth({
@@ -37,8 +37,11 @@ const handler =  NextAuth({
         jwt: true,
     },
     callbacks: {
-        async session(session, token) {
-            session.userId = token.sub;
+        async session({ session }) {
+            // store the user id from MongoDB to session
+            const sessionUser = await User.findOne({ email: session.user.email });
+            session.user.id = sessionUser._id.toString();
+
             return session;
         },
         async jwt(token, user) {
@@ -47,6 +50,23 @@ const handler =  NextAuth({
             }
             return token;
         },
+        async signIn(user, account, profile) {
+            const client = await connectToDB();
+            const usersCollection = client.db().collection("users");
+
+            const userExists = await usersCollection.findOne({ email: user.email });
+            if (!userExists) {
+                await usersCollection.insertOne({
+                    email: user.email,
+                    name: user.name,
+                    image: '/assets/images/default-pic.jpg',
+                    createdAt: new Date(),
+                });
+            }
+
+            client.close();
+            return true;
+        }
     }
 });
 
