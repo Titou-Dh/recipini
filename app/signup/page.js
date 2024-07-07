@@ -1,5 +1,9 @@
+"use client";
 import Image from "next/image"
 import Link from "next/link"
+
+import { useEffect, useState } from "react"
+import { signIn,  getProviders } from "next-auth/react";
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,7 +17,16 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 
-export default function Login() {
+export default function Signup() {
+    const [providers, setProviders] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            const res = await getProviders();
+            console.log(res);
+            setProviders(res);
+        })();
+    }, []);
     return (
         <div className="w-full overflow-hidden lg:grid lg:min-h-[600px] lg:grid-cols-2 max-h-screen ">
             <div className="hidden bg-muted lg:block">
@@ -61,9 +74,21 @@ export default function Login() {
                             <Button type="submit" className="w-full">
                                 Create an account
                             </Button>
-                            <Button variant="outline" className="w-full">
-                                Sign up with Google
-                            </Button>
+                            <>
+                                {providers &&
+                                    Object.values(providers).map((provider) => (
+                                        <Button
+                                            variant="outline"
+                                            key={provider.name}
+                                            onClick={() => {
+                                                signIn(provider.id);
+                                            }}
+                                            className="w-full"
+                                        >
+                                            Sign up with {provider.name}
+                                        </Button>
+                                    ))}
+                            </>
                         </div>
                         <div className="mt-4 text-center text-sm">
                             Already have an account?{" "}
