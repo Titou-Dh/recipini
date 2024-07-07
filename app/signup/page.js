@@ -21,7 +21,6 @@ export default function Signup() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [file, setFile] = useState(null);
     const [uploadStatus, setUploadStatus] = useState('');
 
     const handleChange = (e) => {
@@ -35,38 +34,7 @@ export default function Signup() {
         }
     };
 
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        if (!file) {
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('avatar', file);
-
-        try {
-            const response = await fetch('/api/upload-avatar', {
-                method: 'POST',
-                body: JSON.stringify(formData) ,
-            });
-
-            if (response.ok) {
-                const { filePath } = await response.json();
-                setUploadStatus(`File uploaded successfully: ${filePath}`);
-            } else {
-                const { message, error } = await response.json();
-                setUploadStatus(`${message}: ${error}`);
-            }
-        } catch (error) {
-            setUploadStatus(error.message);
-        }   
-        
-    }; 
 
     return (
         <div className="w-full overflow-hidden lg:grid lg:min-h-[600px] lg:grid-cols-2 max-h-screen">
@@ -112,14 +80,7 @@ export default function Signup() {
                                     required
                                 />
                             </div>
-                            <div className="grid w-full max-w-sm items-center gap-1.5">
-                                <Label htmlFor="picture">Picture</Label>
-                                <Input
-                                    id="picture"
-                                    type="file"
-                                    onChange={handleFileChange}
-                                />
-                            </div>
+
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>
                                 <Input
