@@ -1,9 +1,12 @@
-import Image from "next/image"
-import Link from "next/link"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 import {
     Card,
@@ -11,11 +14,62 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 
-export default function Login() {
+
+export default function Signup() {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [file, setFile] = useState(null);
+    const [uploadStatus, setUploadStatus] = useState('');
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (name === 'name') {
+            setName(value);
+        } else if (name === 'email') {
+            setEmail(value);
+        } else if (name === 'password') {
+            setPassword(value);
+        }
+    };
+
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!file) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('avatar', file);
+
+        try {
+            const response = await fetch('/api/upload-avatar', {
+                method: 'POST',
+                body: JSON.stringify(formData) ,
+            });
+
+            if (response.ok) {
+                const { filePath } = await response.json();
+                setUploadStatus(`File uploaded successfully: ${filePath}`);
+            } else {
+                const { message, error } = await response.json();
+                setUploadStatus(`${message}: ${error}`);
+            }
+        } catch (error) {
+            setUploadStatus(error.message);
+        }   
+        
+    }; 
+
     return (
-        <div className="w-full overflow-hidden lg:grid lg:min-h-[600px] lg:grid-cols-2 max-h-screen ">
+        <div className="w-full overflow-hidden lg:grid lg:min-h-[600px] lg:grid-cols-2 max-h-screen">
             <div className="hidden bg-muted lg:block">
                 <Image
                     src="/assets/images/signup.jpg"
@@ -34,29 +88,49 @@ export default function Login() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="grid gap-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="grid gap-2">
-                                    <Label htmlFor="first-name">First name</Label>
-                                    <Input id="first-name" placeholder="Max" required />
-                                </div>
-                                <div className="grid gap-2">
-                                    <Label htmlFor="last-name">Last name</Label>
-                                    <Input id="last-name" placeholder="Robinson" required />
-                                </div>
+                        <form onSubmit={handleSubmit} className="grid gap-4">
+                            <div className="grid gap-2">
+                                <Label htmlFor="username">Username</Label>
+                                <Input
+                                    id="username"
+                                    name="name"
+                                    value={name}
+                                    onChange={handleChange}
+                                    placeholder="Robinson"
+                                    required
+                                />
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
                                     id="email"
+                                    name="email"
+                                    value={email}
+                                    onChange={handleChange}
                                     type="email"
                                     placeholder="m@example.com"
                                     required
                                 />
                             </div>
+                            <div className="grid w-full max-w-sm items-center gap-1.5">
+                                <Label htmlFor="picture">Picture</Label>
+                                <Input
+                                    id="picture"
+                                    type="file"
+                                    onChange={handleFileChange}
+                                />
+                            </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>
-                                <Input id="password" type="password" />
+                                <Input
+                                    id="password"
+                                    name="password"
+                                    value={password}
+                                    onChange={handleChange}
+                                    type="password"
+                                    placeholder="Password"
+                                    required
+                                />
                             </div>
                             <Button type="submit" className="w-full">
                                 Create an account
@@ -64,16 +138,21 @@ export default function Login() {
                             <Button variant="outline" className="w-full">
                                 Sign up with Google
                             </Button>
-                        </div>
+                        </form>
                         <div className="mt-4 text-center text-sm">
-                            Already have an account?{" "}
+                            Already have an account?{' '}
                             <Link href="#" className="underline">
                                 Sign in
                             </Link>
                         </div>
+                        {uploadStatus && (
+                            <div className="mt-4 text-sm text-center text-muted">
+                                {uploadStatus}
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
             </div>
         </div>
-    )
+    );
 }
