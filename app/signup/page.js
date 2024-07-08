@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { useEffect, useState } from "react"
-import { signIn, getProviders, useSession, signUp } from "next-auth/react";
+import { signIn, getProviders, useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,9 +21,34 @@ export default function Signup() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    const [message, setMessage] = useState("");
     const [providers, setProviders] = useState(null);
     const { data: session } = useSession();
+
+    const handleSignUp = async () => {
+
+        try {
+            console.log(username, email, password);
+            const res = await fetch("/api/signup", {
+                method: "POST",
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password,
+                }),
+            });
+
+
+            if (res.ok) {
+                setMessage('Sign up successful!');
+
+            }
+        } catch (error) {
+            console.error("error signing up :", error);
+            setMessage("Something went wrong");
+        }
+    }
+
 
 
     useEffect(() => {
@@ -59,6 +84,7 @@ export default function Signup() {
                                 <Label htmlFor="first-name">Username</Label>
                                 <Input
                                     id="first-name"
+                                    name="username"
                                     onChange={(e) => setUsername(e.target.value)}
                                     placeholder="Max" required
                                 />
@@ -69,6 +95,7 @@ export default function Signup() {
                                 <Input
                                     id="email"
                                     type="email"
+                                    name="email"
                                     placeholder="m@example.com"
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
@@ -77,6 +104,7 @@ export default function Signup() {
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>
                                 <Input
+                                    name="password"
                                     id="password"
                                     type="password"
                                     onChange={(e) => setPassword(e.target.value)}
@@ -86,11 +114,7 @@ export default function Signup() {
                                 type="submit"
                                 className="w-full"
                                 onClick={() => {
-                                    signUp({
-                                        username,
-                                        email,
-                                        password,
-                                    }, { callbacUrl: '/' })
+                                    handleSignUp();
                                 }}
                             >
                                 Create an account
@@ -102,7 +126,7 @@ export default function Signup() {
                                             variant="outline"
                                             key={provider.name}
                                             onClick={() => {
-                                                signUp(provider.id, { callbackUrl: "/success" });
+                                                signIn(provider.id, { callbackUrl: "/success" });
                                             }}
                                             className="w-full"
                                         >
@@ -117,12 +141,8 @@ export default function Signup() {
                                 Sign in
                             </Link>
                         </div>
-                        {session && (
-                            <div className="mt-4 text-center text-sm">
-                                {session?.user.id}
-                                hello {session?.user.email}, you are signed in with name{" "}    {session?.user.username}
-                                and image <Image src={session?.user.image} alt="profile" width="30" height="30" />
-                            </div>
+                        {message && (
+                            <p className="text-center text-sm text-red-500 mt-4">{message}</p>
                         )}
                     </CardContent>
                 </Card>
