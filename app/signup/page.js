@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { useEffect, useState } from "react"
-import { signIn, getProviders } from "next-auth/react";
+import { signIn, getProviders, useSession, signUp } from "next-auth/react";
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -18,7 +18,13 @@ import {
 } from "@/components/ui/card"
 
 export default function Signup() {
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
     const [providers, setProviders] = useState(null);
+    const { data: session } = useSession();
+
 
     useEffect(() => {
         (async () => {
@@ -51,7 +57,11 @@ export default function Signup() {
 
                             <div className="grid gap-2">
                                 <Label htmlFor="first-name">Username</Label>
-                                <Input id="first-name" placeholder="Max" required />
+                                <Input
+                                    id="first-name"
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    placeholder="Max" required
+                                />
                             </div>
 
                             <div className="grid gap-2">
@@ -60,14 +70,29 @@ export default function Signup() {
                                     id="email"
                                     type="email"
                                     placeholder="m@example.com"
+                                    onChange={(e) => setEmail(e.target.value)}
                                     required
                                 />
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="password">Password</Label>
-                                <Input id="password" type="password" />
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
                             </div>
-                            <Button type="submit" className="w-full">
+                            <Button
+                                type="submit"
+                                className="w-full"
+                                onClick={() => {
+                                    signUp({
+                                        username,
+                                        email,
+                                        password,
+                                    }, { callbacUrl: '/' })
+                                }}
+                            >
                                 Create an account
                             </Button>
                             <>
@@ -77,7 +102,7 @@ export default function Signup() {
                                             variant="outline"
                                             key={provider.name}
                                             onClick={() => {
-                                                signIn(provider.id);
+                                                signUp(provider.id, { callbackUrl: "/success" });
                                             }}
                                             className="w-full"
                                         >
@@ -88,10 +113,17 @@ export default function Signup() {
                         </div>
                         <div className="mt-4 text-center text-sm">
                             Already have an account?{" "}
-                            <Link href="#" className="underline">
+                            <Link href="/login" className="underline">
                                 Sign in
                             </Link>
                         </div>
+                        {session && (
+                            <div className="mt-4 text-center text-sm">
+                                {session?.user.id}
+                                hello {session?.user.email}, you are signed in with name{" "}    {session?.user.username}
+                                and image <Image src={session?.user.image} alt="profile" width="30" height="30" />
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
             </div>

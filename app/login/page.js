@@ -1,9 +1,14 @@
+"use client";
+
+
+
 import Image from "next/image"
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { signIn} from "next-auth/react"
 
 export default function Login() {
     return (
@@ -38,10 +43,19 @@ export default function Login() {
                             </div>
                             <Input id="password" type="password" required />
                         </div>
-                        <Button type="submit" className="w-full">
+                        <Button 
+                        type="submit" 
+                        className="w-full"
+                        
+                        >
                             Login
                         </Button>
-                        <Button variant="outline" className="w-full">
+                        <Button onClick={
+                            ()=> {
+                                signIn('google', { callbackUrl: '/' })
+                            }} 
+                        variant="outline" 
+                        className="w-full">
                             Login with Google
                         </Button>
                     </div>

@@ -15,14 +15,13 @@ const handler = NextAuth({
         jwt: true,
     },
     callbacks: {
-        async session({ session, token }) {
-            // Store the user id from MongoDB to session
-            if (token.id) {
-                session.user.id = token.id;
-                session.user.username = token.username;
-                session.user.email = token.email;
-                session.user.profilePicture = token.profilePicture;
-            }
+        async session({ session }) {
+            const sessionUser = await User.findOne({ email: session.user.email });
+            session.user.id = sessionUser._id.toString();
+            session.user.username = sessionUser.username;
+            session.user.image = sessionUser.profilePicture;
+            session.email = sessionUser.email;
+
             return session;
         },
         async jwt({ token, user }) {
@@ -33,34 +32,27 @@ const handler = NextAuth({
         },
         async signIn({ profile }) {
             try {
-                const client = await connectToDB();
+                await connectToDB();
                 const userExists = await User.findOne({ email: profile.email });
                 if (!userExists) {
                     await User.create({
                         email: profile.email,
                         username: profile.name,
                         password: "123456789", // No password since it's a social login
-                        profilePicture: `/assets/default-pic.png`, // Generate avatar based on the first character of the name
+                        profilePicture: `/assets/images/default-pic.jpg`, // Generate avatar based on the first character of the name
                         createdAt: new Date(),
                     });
                 }
 
                 return true;
-            }catch (error) {
-                console.error("error signing in :",error);
+            } catch (error) {
+                console.error("error signing in :", error);
                 return false;
             }
 
         },
-    },
-    pages: {
-        signIn: '/auth/signin',
-        signOut: '/auth/signout',
-        error: '/auth/error',
-        verifyRequest: '/auth/verify-request',
-        newUser: null,
-    },
 
+    },
     debug: true,
 });
 
