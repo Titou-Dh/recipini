@@ -1,73 +1,52 @@
-// pages/api/auth/[...nextauth].js
 import NextAuth from "next-auth";
-import GoogleProvider  from "next-auth/providers/google";
+import GoogleProvider from "next-auth/providers/google";
 import { connectToDB } from "@/utils/db";
-import { verifyPassword } from "@/utils/auth";
+import User from "@/models/User"; // Import your User model
 
-const handler =  NextAuth({
+const handler = NextAuth({
     providers: [
-        // Providers.Credentials({
-        //     async authorize(credentials) {
-        //         const client = await connectToDatabase();
-        //         const usersCollection = client.db().collection("users");
-
-        //         const user = await usersCollection.findOne({ email: credentials.email });
-        //         if (!user) {
-        //             client.close();
-        //             throw new Error("No user found with the entered email address");
-        //         }
-
-        //         const isValid = await verifyPassword(credentials.password, user.password);
-        //         if (!isValid) {
-        //             client.close();
-        //             throw new Error("Could not log you in");
-        //         }
-
-        //         client.close();
-        //         return { email: user.email };
-        //     }
-        // }),
-        GoogleProvider ({
+        GoogleProvider({
             clientId: process.env.GOOGLE_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        })
+        }),
     ],
-    database: process.env.MONGODB_URI,
     session: {
-        jwt: true,
+        strategy: 'jwt',
     },
     callbacks: {
-        async session({ session }) {
-            // store the user id from MongoDB to session
-            const sessionUser = await User.findOne({ email: session.user.email });
-            session.user.id = sessionUser._id.toString();
-
+        async session({ session, token }) {
+            // Store the user id from MongoDB to session
+            if (token.id) {
+                session.user.id = token.id;
+            }
             return session;
         },
-        async jwt(token, user) {
+        async jwt({ token, user }) {
             if (user) {
-                token.sub = user.id;
+                token.id = user.id;
             }
             return token;
         },
-        async signIn(user, account, profile) {
+        async signIn({ user, account, profile }) {
             const client = await connectToDB();
-            const usersCollection = client.db().collection("users");
 
-            const userExists = await usersCollection.findOne({ email: user.email });
+
+            const userExists = await User.findOne({ email: user.email });
             if (!userExists) {
-                await usersCollection.insertOne({
+                await User.create({
                     email: user.email,
                     name: user.name,
-                    image: '/assets/images/default-pic.jpg',
+                    image: `/assets/default-pic.png`, // Generate avatar based on the first character of the name
                     createdAt: new Date(),
                 });
             }
 
             client.close();
             return true;
-        }
-    }
+        },
+    },
+
+    debug: true,
 });
 
-export{ handler as GET, handler as POST};
+export { handler as GET, handler as POST };
