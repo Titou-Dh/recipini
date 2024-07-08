@@ -1,4 +1,7 @@
 "use client";
+
+
+
 import Image from "next/image"
 import Link from "next/link"
 
@@ -26,11 +29,13 @@ export default function Signup() {
     const { data: session } = useSession();
 
     const handleSignUp = async () => {
-
         try {
             console.log(username, email, password);
             const res = await fetch("/api/signup", {
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify({
                     username,
                     email,
@@ -38,16 +43,17 @@ export default function Signup() {
                 }),
             });
 
-
             if (res.ok) {
                 setMessage('Sign up successful!');
-
+            } else {
+                const data = await res.json();
+                setMessage(data.message);
             }
         } catch (error) {
             console.error("error signing up :", error);
             setMessage("Something went wrong");
         }
-    }
+    };
 
 
 
@@ -121,7 +127,7 @@ export default function Signup() {
                             </Button>
                             <>
                                 {providers &&
-                                    Object.values(providers).map((provider) => (
+                                    Object.values(providers).slice(0, 1).map((provider) => (
                                         <Button
                                             variant="outline"
                                             key={provider.name}
@@ -130,7 +136,7 @@ export default function Signup() {
                                             }}
                                             className="w-full"
                                         >
-                                            Sign up with {provider.name}
+                                            Sign up with {provider.name} 
                                         </Button>
                                     ))}
                             </>

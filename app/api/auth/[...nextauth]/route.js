@@ -2,12 +2,41 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { connectToDB } from "@/utils/db";
 import User from "@/models/User"; // Import your User model
+import { compare } from "bcryptjs";
+import CredentialsProvider from "next-auth/providers/credentials";
+
+
 
 const handler = NextAuth({
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        }),
+        CredentialsProvider({
+            name: 'Credentials',
+            credentials: {
+                email: { label: "Email", type: "email", placeholder: "example@example.com" },
+                password: { label: "Password", type: "password" }
+            },
+            async authorize(credentials) {
+                await connectToDB();
+
+                const user = await User.findOne({ email: credentials.email });
+                console.log(user, 'user')
+
+                if (!user) {
+                    throw new Error("No user found with the email");
+                }
+
+                const isValid = await compare(credentials.password, user.password);
+
+                if (!isValid) {
+                    throw new Error("Password is incorrect");
+                }
+
+                return user;
+            }
         }),
     ],
     session: {
@@ -20,7 +49,7 @@ const handler = NextAuth({
             session.user.id = sessionUser._id.toString();
             session.user.username = sessionUser.username;
             session.user.image = sessionUser.profilePicture;
-            session.email = sessionUser.email;
+            session.user.email = sessionUser.email;
 
             return session;
         },
