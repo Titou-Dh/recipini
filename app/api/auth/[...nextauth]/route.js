@@ -1,11 +1,9 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { connectToDB } from "@/utils/db";
-import User from "@/models/User"; // Import your User model
+import User from "@/models/User";
 import { compare } from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-
 
 const handler = NextAuth({
     providers: [
@@ -30,7 +28,7 @@ const handler = NextAuth({
                 }
 
                 const isValid = await compare(credentials.password, user.password);
-
+                console.log(isValid, 'isValid')
                 if (!isValid) {
                     throw new Error("Password is incorrect");
                 }
@@ -50,7 +48,6 @@ const handler = NextAuth({
             session.user.username = sessionUser.username;
             session.user.image = sessionUser.profilePicture;
             session.user.email = sessionUser.email;
-
             return session;
         },
         async jwt({ token, user }) {
@@ -59,28 +56,34 @@ const handler = NextAuth({
             }
             return token;
         },
-        async signIn({ profile }) {
+        async signIn({ profile, credentials, user }) {
             try {
                 await connectToDB();
-                const userExists = await User.findOne({ email: profile.email });
+                console.log(user, 'user');
+                const email = profile?.email || user?.email;
+                if (!email) {
+                    throw new Error("Email is undefined");
+                }
+                const userExists = await User.findOne({ email });
+                console.log('profile');
+                console.log(userExists, 'userExists');
                 if (!userExists) {
                     await User.create({
                         email: profile.email,
                         username: profile.name,
-                        password: "123456789", // No password since it's a social login
-                        profilePicture: `/assets/images/default-pic.jpg`, // Generate avatar based on the first character of the name
+                        password: "123456789",
+                        profilePicture: `/assets/images/default-pic.jpg`,
                         createdAt: new Date(),
                     });
                 }
 
+
                 return true;
             } catch (error) {
-                console.error("error signing in :", error);
+                console.error("error signing in:", error);
                 return false;
             }
-
         },
-
     },
     debug: true,
 });

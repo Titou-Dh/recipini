@@ -2,8 +2,19 @@
 
 
 
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
+
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+} from "@/components/ui/alert"
+
+
+
 import Image from "next/image"
 import Link from "next/link"
+import { useSession } from "next-auth/react";
 
 import { useState } from "react"
 
@@ -16,6 +27,7 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
+    const { data: session } = useSession();
 
     const handleLogin = async () => {
         const res = await signIn("credentials", {
@@ -96,8 +108,15 @@ export default function Login() {
                         </Link>
                     </div>
                     {message && (
-                        <p className="text-center text-sm text-red-500 mt-4">{message}</p>
+                        <Alert variant="destructive">
+                            <ExclamationTriangleIcon className="h-4 w-4" />
+                            <AlertTitle>Error</AlertTitle>
+                            <AlertDescription>
+                                {message}
+                            </AlertDescription>
+                        </Alert>
                     )}
+
                 </div>
             </div>
             <div className="hidden bg-muted lg:block">
