@@ -2,19 +2,19 @@ import { Button } from '@/components/ui/button';
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-800 relative overflow-hidden z-10">
+        <footer className="bg-gray-800 dark:bg-gray-900 relative overflow-hidden z-10">
             <div className="absolute inset-0 w-screen top-[50%] flex items-center left-[45%] opacity-90 justify-center z-0">
-                <div className="bg-primaryL w-96 h-52 rounded-full filter blur-3xl"></div>
+                <div className="bg-primaryL dark:bg-primaryD w-96 h-52 rounded-full filter blur-3xl"></div>
             </div>
             <div className="absolute inset-0 w-screen top-[10%] flex items-center -left-[10%] opacity-90 justify-center z-0">
-                <div className="bg-backgroundL w-44 h-36 rounded-full filter blur-3xl"></div>
+                <div className="bg-backgroundL dark:bg-backgroundD w-44 h-36 rounded-full filter blur-3xl"></div>
             </div>
             <div className="relative z-20">
-                <div className="bg-transparent py-16">
+                <div className="bg-transparent dark:bg-transparent py-16">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center">
-                            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">Ready to Get Started?</p>
-                            <p className="mt-4 max-w-2xl text-xl text-gray-300 mx-auto">Join Recipini today and explore the world of delicious recipes!</p>
+                            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white dark:text-gray-200 sm:text-4xl">Ready to Get Started?</p>
+                            <p className="mt-4 max-w-2xl text-xl text-gray-300 dark:text-gray-400 mx-auto">Join Recipini today and explore the world of delicious recipes!</p>
                             <div className="mt-6">
                                 <Button as="a" href="/auth" className="ml-4" color="primary">
                                     Sign Up Now
@@ -26,7 +26,7 @@ const Footer = () => {
                 <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                     <div className="md:flex md:justify-between md:items-center">
                         <div className="flex justify-center md:order-2">
-                            <a href="#" className="text-backgroundL hover:text-gray-300 ml-4">
+                            <a href="#" className="text-backgroundL dark:text-gray-300 hover:text-gray-300 ml-4">
                                 <span className="sr-only">Twitter</span>
                                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path
@@ -36,7 +36,7 @@ const Footer = () => {
                                     />
                                 </svg>
                             </a>
-                            <a href="#" className="text-backgroundL hover:text-gray-300 ml-4">
+                            <a href="#" className="text-backgroundL dark:text-gray-300 hover:text-gray-300 ml-4">
                                 <span className="sr-only">Facebook</span>
                                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path
@@ -46,7 +46,7 @@ const Footer = () => {
                                     />
                                 </svg>
                             </a>
-                            <a href="#" className="text-backgroundL hover:text-gray-300 ml-4">
+                            <a href="#" className="text-backgroundL dark:text-gray-300 hover:text-gray-300 ml-4">
                                 <span className="sr-only">Instagram</span>
                                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path
@@ -63,7 +63,7 @@ const Footer = () => {
                             </a>
                         </div>
                         <div className="mt-8 md:mt-0 md:order-1">
-                            <p className="text-center text-base text-gray-400">
+                            <p className="text-center text-base text-gray-400 dark:text-gray-500">
                                 &copy; 2024 Recipini, Inc. All rights reserved.
                             </p>
                         </div>
