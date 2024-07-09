@@ -15,6 +15,7 @@ import {
 import Image from "next/image"
 import Link from "next/link"
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import { useState } from "react"
 
@@ -28,6 +29,7 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const { data: session } = useSession();
+    const router = useRouter();
 
     const handleLogin = async () => {
         const res = await signIn("credentials", {
@@ -39,7 +41,7 @@ export default function Login() {
         if (res.error) {
             setMessage(res.error);
         } else {
-            setMessage("Login successful!");
+            router.push("/community");
         }
     };
 
