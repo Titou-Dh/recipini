@@ -1,36 +1,20 @@
 "use client";
 
-
-
 import Image from "next/image"
 import Link from "next/link"
-
 import { useEffect, useState } from "react"
-import { signIn, getProviders, useSession } from "next-auth/react";
-
+import { signIn, getProviders } from "next-auth/react";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-
-
-
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
-
 import {
     Alert,
     AlertDescription,
     AlertTitle,
 } from "@/components/ui/alert"
+import { useRouter } from "next/navigation";
 
-
-
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
 
 export default function Signup() {
     const [username, setUsername] = useState("");
@@ -38,7 +22,8 @@ export default function Signup() {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const [providers, setProviders] = useState(null);
-    const { data: session } = useSession();
+    const router = useRouter();
+
 
     const handleSignUp = async () => {
         try {
@@ -56,7 +41,7 @@ export default function Signup() {
             });
 
             if (res.ok) {
-                setMessage('Sign up successful!');
+                router.push("/login");
             } else {
                 const data = await res.json();
                 setMessage(data.message);
@@ -144,7 +129,7 @@ export default function Signup() {
                                             variant="outline"
                                             key={provider.name}
                                             onClick={() => {
-                                                signIn(provider.id, { callbackUrl: "/success" });
+                                                signIn(provider.id, { callbackUrl: "/login" });
                                             }}
                                             className="w-full"
                                         >
