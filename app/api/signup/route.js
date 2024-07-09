@@ -1,6 +1,7 @@
 import { connectToDB } from "@/utils/db";
 import User from "@/models/User";
 import { hashSync, genSalt, hash } from "bcryptjs";
+
 export const POST = async (req, res) => {
 
     try {

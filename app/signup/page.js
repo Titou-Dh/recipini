@@ -12,6 +12,18 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
+
+
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
+
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+} from "@/components/ui/alert"
+
+
+
 import {
     Card,
     CardContent,
@@ -76,14 +88,14 @@ export default function Signup() {
                 />
             </div>
             <div className="flex items-center justify-center py-12">
-                <Card className="mx-auto max-w-sm">
-                    <CardHeader>
-                        <CardTitle className="text-xl">Sign Up</CardTitle>
-                        <CardDescription>
+                <div className="mx-auto max-w-sm">
+                    <div className="text-center grid gap-2 ">
+                        <div className="text-3xl font-bold my-3">Sign Up</div>
+                        <p className="text-balance text-muted-foreground mt-2 mb-5">
                             Enter your information to create an account
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
+                        </p>
+                    </div>
+                    <div>
                         <div className="grid gap-4">
 
                             <div className="grid gap-2">
@@ -136,22 +148,28 @@ export default function Signup() {
                                             }}
                                             className="w-full"
                                         >
-                                            Sign up with {provider.name} 
+                                            Sign up with {provider.name}
                                         </Button>
                                     ))}
                             </>
                         </div>
-                        <div className="mt-4 text-center text-sm">
+                        <div className="my-4 text-center text-sm">
                             Already have an account?{" "}
                             <Link href="/login" className="underline">
                                 Sign in
                             </Link>
                         </div>
                         {message && (
-                            <p className="text-center text-sm text-red-500 mt-4">{message}</p>
+                            <Alert variant="destructive">
+                                <ExclamationTriangleIcon className="h-4 w-4" />
+                                <AlertTitle>Error</AlertTitle>
+                                <AlertDescription>
+                                    {message}
+                                </AlertDescription>
+                            </Alert>
                         )}
-                    </CardContent>
-                </Card>
+                    </div>
+                </div>
             </div>
         </div>
     )
