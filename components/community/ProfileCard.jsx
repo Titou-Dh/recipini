@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 
 import React from 'react'
+import { Button } from '../ui/button';
 
 function ProfileCard() {
     const { data: session } = useSession()
@@ -19,7 +20,7 @@ function ProfileCard() {
                         <p className="text-sm text-gray-600">{session?.user.email}</p>
                     </div>
                 </div>
-                <button className="bg-primary text-white px-4 py-2 rounded-lg">Edit Profile</button>
+                <Button className="bg-primaryL hover:text-gray-900  text-white px-4 py-2 rounded-lg">Edit Profile</Button>
             </div>
             <div className="mt-4">
                 <p className="text-sm text-gray-600">Welcome back {session?.user.name} 👋</p>
