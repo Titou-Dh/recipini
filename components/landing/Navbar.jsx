@@ -8,8 +8,8 @@ const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <nav className="bg-transparent shadow-md ">
-            <div className=" md:px-32 lg:px-48 px-11 mx-auto  ">
+        <nav className="bg-transparent shadow-md  dark:border-b ">
+            <div className="md:px-32 lg:px-48 px-11 mx-auto">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex">
                         <Link className="m-" href="/">
@@ -17,16 +17,16 @@ const Navbar = () => {
                         </Link>
                     </div>
                     <div className="hidden sm:ml-6 sm:flex sm:space-x-8 md:m-auto">
-                        <Link href="/" className="text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">
+                        <Link href="/" className="text-gray-900 dark:text-white inline-flex items-center px-1 pt-1 text-sm font-medium">
                             Home
                         </Link>
-                        <Link className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium" href="/browse">
+                        <Link className="text-gray-500 dark:text-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium" href="/browse">
                             Browse Recipes
                         </Link>
-                        <Link className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium" href="/about">
+                        <Link className="text-gray-500 dark:text-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium" href="/about">
                             About
                         </Link>
-                        <Link className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium" href="/contact">
+                        <Link className="text-gray-500 dark:text-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium" href="/contact">
                             Contact
                         </Link>
                     </div>
@@ -39,7 +39,7 @@ const Navbar = () => {
                         <button
                             onClick={() => setIsOpen(!isOpen)}
                             type="button"
-                            className="bg-gray-900 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                            className="bg-gray-900 dark:bg-gray-700 inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-white hover:text-white hover:bg-gray-700 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                             aria-controls="mobile-menu"
                             aria-expanded={isOpen ? 'true' : 'false'}
                         >
@@ -59,17 +59,17 @@ const Navbar = () => {
             </div>
 
             <div className={`${isOpen ? 'block' : 'hidden'} sm:hidden`} id="mobile-menu">
-                <div className="px-2 pt-2 pb-3 space-y-1 flex flex-col gap-5 ">
-                    <Link href="/" className="text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium ">
+                <div className="px-2 pt-2 pb-3 space-y-1 flex flex-col gap-5">
+                    <Link href="/" className="text-gray-900 dark:text-white inline-flex items-center px-1 pt-1 text-sm font-medium">
                         Home
                     </Link>
-                    <Link className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium" href="/browse">
+                    <Link className="text-gray-500 dark:text-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium" href="/browse">
                         Browse Recipes
                     </Link>
-                    <Link className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium" href="/about">
+                    <Link className="text-gray-500 dark:text-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium" href="/about">
                         About
                     </Link>
-                    <Link className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium" href="/contact">
+                    <Link className="text-gray-500 dark:text-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium" href="/contact">
                         Contact
                     </Link>
                     <Button as="a" href="/auth" className="w-full text-center mt-2" color="primary">

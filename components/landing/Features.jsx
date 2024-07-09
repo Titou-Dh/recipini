@@ -2,7 +2,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUtensils, faStar, faComment, faHeart } from '@fortawesome/free-solid-svg-icons';
 
-
 const features = [
     {
         icon: faUtensils,
@@ -28,23 +27,23 @@ const features = [
 
 const Features = () => {
     return (
-        <div className="bg-white py-16">
+        <div className="bg-primary dark:bg-transparent py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center">
-                    <h2 className="text-base text-yellow-600 font-semibold tracking-wide uppercase">Features</h2>
-                    <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">Why Choose RecipeShare?</p>
+                    <h2 className="text-base text-yellow-600 dark:text-yellow-400 font-semibold tracking-wide uppercase">Features</h2>
+                    <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">Why Choose RecipeShare?</p>
                 </div>
                 <div className="mt-10">
                     <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
                         {features.map((feature) => (
-                            <div key={feature.title} className="relative border-primaryL border py-7 px-5 rounded-xl hover:bg-primaryL transition">
+                            <div key={feature.title} className="relative border-primaryL border py-7 px-5 rounded-xl hover:bg-primaryL dark:hover:bg-gray-700 transition">
                                 <dt>
-                                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-yellow-500 text-white">
+                                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-yellow-500 dark:bg-yellow-400 text-white">
                                         <FontAwesomeIcon icon={feature.icon} className="h-6 w-6" />
                                     </div>
-                                    <p className="ml-16 text-lg leading-6 font-medium text-gray-900">{feature.title}</p>
+                                    <p className="ml-16 text-lg leading-6 font-medium text-white">{feature.title}</p>
                                 </dt>
-                                <dd className="mt-2 ml-16 text-base text-gray-500">{feature.description}</dd>
+                                <dd className="mt-2 ml-16 text-base text-gray-300">{feature.description}</dd>
                             </div>
                         ))}
                     </dl>

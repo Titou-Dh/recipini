@@ -91,6 +91,7 @@ import { faUser, faBookmark, faHouse,faPlus } from '@fortawesome/free-solid-svg-
 
 
 import React from 'react'
+import DarkModeToggle from "../DarkModeToggle";
 
 function Nav() {
     return (
@@ -118,6 +119,7 @@ function Nav() {
                     <span className="hidden md:flex">Profile</span>
                     
                 </Link>
+                <DarkModeToggle />
             </div>
         </div>
     )
