@@ -4,6 +4,15 @@ import { Button } from "@/components/ui/button"
 import Image from 'next/image';
 import Link from 'next/link';
 
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -31,9 +40,14 @@ const Navbar = () => {
                         </Link>
                     </div>
                     <div className="hidden sm:flex sm:items-center">
-                        <Button as="a" href="/auth" className="ml-4" color="primary">
-                            Login / Signup
-                        </Button>
+
+                        <DropdownMenu color="primary">
+                            <DropdownMenuTrigger><Button>Login / Signup</Button></DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <Link href="/login"><DropdownMenuItem>Login</DropdownMenuItem></Link>
+                                <Link href="/signup"><DropdownMenuItem>Signup</DropdownMenuItem></Link>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
                     <div className="-mr-2 flex items-center sm:hidden">
                         <button
@@ -72,9 +86,14 @@ const Navbar = () => {
                     <Link className="text-gray-500 dark:text-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium" href="/contact">
                         Contact
                     </Link>
-                    <Button as="a" href="/auth" className="w-full text-center mt-2" color="primary">
-                        Login / Signup
-                    </Button>
+
+                    <DropdownMenu color="primary">
+                            <DropdownMenuTrigger><Button className="w-full">Login / Signup</Button></DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <Link href="/login"><DropdownMenuItem>Login</DropdownMenuItem></Link>
+                                <Link href="/signup"><DropdownMenuItem>Signup</DropdownMenuItem></Link>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                 </div>
             </div>
         </nav>
