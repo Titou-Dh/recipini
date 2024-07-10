@@ -1,5 +1,6 @@
 // components/Hero.js
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 import Image from 'next/image';
 
 const Hero = () => {
@@ -19,8 +20,8 @@ const Hero = () => {
                     Discover and share your favorite recipes with our community of food enthusiasts.
                 </p>
                 <div className="mt-10">
-                    <Button as="a" href="/browse" className="" color="primary">
-                        Browse Recipes
+                    <Button as="Link" href="/community" className="" color="primary">
+                        <Link href="/community">Browse Recipes</Link>
                     </Button>
                 </div>
             </div>

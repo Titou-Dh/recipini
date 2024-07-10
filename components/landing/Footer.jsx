@@ -17,9 +17,11 @@ const Footer = () => {
                             <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white dark:text-gray-200 sm:text-4xl">Ready to Get Started?</p>
                             <p className="mt-4 max-w-2xl text-xl text-gray-300 dark:text-gray-400 mx-auto">Join Recipini today and explore the world of delicious recipes!</p>
                             <div className="mt-6">
-                                <Link href="/signup" className="ml-4">
-                                    <Button>Sign Up Now</Button>
-                                </Link>
+                                <Button>
+                                    <Link href="/signup" className="ml-4">
+                                        Sign Up Now
+                                    </Link>
+                                </Button>
                             </div>
                         </div>
                     </div>
