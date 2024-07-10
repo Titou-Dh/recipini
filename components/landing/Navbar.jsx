@@ -88,12 +88,12 @@ const Navbar = () => {
                     </Link>
 
                     <DropdownMenu color="primary">
-                            <DropdownMenuTrigger><Button className="w-full">Login / Signup</Button></DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <Link href="/login"><DropdownMenuItem>Login</DropdownMenuItem></Link>
-                                <Link href="/signup"><DropdownMenuItem>Signup</DropdownMenuItem></Link>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        <DropdownMenuTrigger><Button className="w-full">Login / Signup</Button></DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <Link href="/login"><DropdownMenuItem>Login</DropdownMenuItem></Link>
+                            <Link href="/signup"><DropdownMenuItem>Signup</DropdownMenuItem></Link>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </div>
         </nav>
