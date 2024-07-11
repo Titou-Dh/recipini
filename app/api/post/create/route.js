@@ -1,7 +1,8 @@
 
 import multer from 'multer'; // For image upload handling
-import connectDB from '@/utils/connectDB';
+import connectDB from '@/utils/db';
 import Recipe from '@/models/Recipe';
+import User from '@/models/User';
 
 
 
@@ -20,16 +21,20 @@ const handler = async () => {
 
         console.log(req.body);
         console.log(req.file);
-        
+
+        const user = User.findById(req.body.authorId);
 
         // Get user from database
+        if (!user) {
+            return new Response(404).json({ message: 'User not found' });
+        }
         const newRecipe = new Recipe({
             title: req.body.title,
             description: req.body.description,
             ingredients: req.body.ingredients,
             instructions: req.body.instructions,
             image: req.file ? `/images/${req.file.filename}` : '',
-            author: req.body.author,
+            author: user,
         });
 
         // Save recipe to database

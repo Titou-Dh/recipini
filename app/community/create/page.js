@@ -5,6 +5,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { useState, useCallback } from "react"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { useSession } from 'next-auth/react';
 
 export default function page() {
     const [title, setTitle] = useState('')
@@ -12,6 +13,7 @@ export default function page() {
     const [description, setDescription] = useState('')
     const [steps, setSteps] = useState('')
     const [images, setImages] = useState([])
+    const { data: session } = useSession();
 
 
 
@@ -31,12 +33,18 @@ export default function page() {
         e.preventDefault();
 
         const data = new FormData();
+        data.append('title', title);
+        data.append('ingredients', ingredients);
+        data.append('description', description);
+        data.append('steps', steps);
+        data.append('authorId', session.user.id)
+        
 
         for (let i = 0; i < images.length; i++) {
             data.append('images', images[i]);
         }
 
-        const res = await fetch('/api/upload', {
+        const res = await fetch('/api/post/create', {
             method: 'POST',
             body: data,
         });
