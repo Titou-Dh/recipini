@@ -27,7 +27,7 @@ function Nav() {
                     <FontAwesomeIcon icon={faHouse} className="h-6 w-6" />
                     <span className="hidden md:flex">Browse</span>
                 </Link>
-                <Link href="#" className="text-lg hover:scale-[1.1] transition-all font-medium hover:underline underline-offset-4 flex gap-2 dark:text-white" prefetch={false}>
+                <Link href="/community/create" className="text-lg hover:scale-[1.1] transition-all font-medium hover:underline underline-offset-4 flex gap-2 dark:text-white" prefetch={false}>
                     <FontAwesomeIcon icon={faPlus} className="h-6 w-6" />
                     <span className="hidden md:flex">Create</span>
                 </Link>

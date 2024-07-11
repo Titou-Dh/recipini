@@ -1,6 +1,6 @@
 
 import multer from 'multer'; // For image upload handling
-import connectToDB from '@/utils/db';
+import { connectToDB } from '@/utils/db';
 import Recipe from '@/models/Recipe';
 import User from '@/models/User';
 
