@@ -7,24 +7,35 @@ import User from '@/models/User';
 
 
 // Multer configuration
-const upload = multer({dist: 'public/images'});
+const upload = multer({ dist: 'public/images' });
 
 // POST /api/post/create
 
 const handler = async (req, res) => {
     try {
-        const { title, description, ingredients, instructions, authorId } = req.json();
+        const { title, description, ingredients, instructions, authorId, images } = req.json();
         // Connect to 
         await connectToDB();
+        console.log(images, "images");
+        console.log(images[0], "images[0]");
+        console.log(images[0].path, "images[0].path");
+        console.log(req.json(), "req.json()");
 
-        const uploadImage = upload.single('image');
-        uploadImage(req, res, (err) => {
+
+        const image = images[0];
+
+
+        upload.single('image')(req, res, (err) => {
             if (err) {
                 console.log(err);
                 return new Response(JSON.stringify({ message: 'Image upload failed' }), { status: 500 });
             }
-        });
+        }
+        );
 
+
+
+        // Check if user exists
 
         const user = User.findById(authorId);
 
@@ -35,12 +46,12 @@ const handler = async (req, res) => {
 
         const newRecipe = await Recipe.create({
             title: title,
-            description:description,
-            ingredients:ingredients,
-            instructions:instructions,
+            description: description,
+            ingredients: ingredients,
+            instructions: instructions,
             image: req.file.path,
-            author:user
-        }); 
+            author: user
+        });
 
         await newRecipe.save();
 
@@ -51,4 +62,4 @@ const handler = async (req, res) => {
     }
 };
 
-export {handler as POST}
+export { handler as POST }

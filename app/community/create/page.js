@@ -32,24 +32,22 @@ export default function page() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const data = new FormData();
-        data.append('title', title);
-        data.append('ingredients', ingredients);
-        data.append('description', description);
-        data.append('steps', steps);
-        data.append('authorId', session.user.id)
-        data.append('images', images);
-        
 
-        for (let i = 0; i < images.length; i++) {
-            data.append('images', images[i]);
-        }
+
+
 
         const res = await fetch('/api/post/create', {
             method: 'POST',
-            body: data,
+            body: JSON.stringify({
+                title : title,
+                ingredients:ingredients,
+                description:description,
+                steps:steps,
+                authorId: session.user.id,
+                images:images
+            }),
 
-        });
+        })
 
         if (res.ok) {
             alert('Upload successful');
