@@ -38,6 +38,7 @@ export default function page() {
         data.append('description', description);
         data.append('steps', steps);
         data.append('authorId', session.user.id)
+        data.append('images', images);
         
 
         for (let i = 0; i < images.length; i++) {
@@ -47,6 +48,7 @@ export default function page() {
         const res = await fetch('/api/post/create', {
             method: 'POST',
             body: data,
+
         });
 
         if (res.ok) {

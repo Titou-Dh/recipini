@@ -1,6 +1,6 @@
 
 import multer from 'multer'; // For image upload handling
-import connectDB from '@/utils/db';
+import connectToDB from '@/utils/db';
 import Recipe from '@/models/Recipe';
 import User from '@/models/User';
 
@@ -11,39 +11,43 @@ const upload = multer({dist: 'public/images'});
 
 // POST /api/post/create
 
-const handler = async () => {
+const handler = async (req, res) => {
     try {
-        // Connect to database
-        await connectDB();
+        const { title, description, ingredients, instructions, authorId } = req.json();
+        // Connect to 
+        await connectToDB();
 
-        const uploadImage = util.promisify(upload.single('image'));
-        await uploadImage(req, res);
+        const uploadImage = upload.single('image');
+        uploadImage(req, res, (err) => {
+            if (err) {
+                console.log(err);
+                return new Response(JSON.stringify({ message: 'Image upload failed' }), { status: 500 });
+            }
+        });
 
-        console.log(req.body);
-        console.log(req.file);
 
-        const user = User.findById(req.body.authorId);
+        const user = User.findById(authorId);
 
         // Get user from database
         if (!user) {
-            return new Response(404).json({ message: 'User not found' });
+            return new Response(JSON.stringify({ message: 'User not found' }), { status: 404 });
         }
-        const newRecipe = new Recipe({
-            title: req.body.title,
-            description: req.body.description,
-            ingredients: req.body.ingredients,
-            instructions: req.body.instructions,
-            image: req.file ? `/images/${req.file.filename}` : '',
-            author: user,
-        });
 
-        // Save recipe to database
+        const newRecipe = await Recipe.create({
+            title: title,
+            description:description,
+            ingredients:ingredients,
+            instructions:instructions,
+            image: req.file.path,
+            author:user
+        }); 
+
         await newRecipe.save();
 
-        return new Response(200).json({ message: 'Recipe created successfully' });
+        return new Response(JSON.stringify(newRecipe), { status: 200 });
     }
     catch (error) {
-        return new Response(500).json({ message: 'Error creating recipe' });
+        return new Response(JSON.stringify(error), { status: 500 });
     }
 };
 
