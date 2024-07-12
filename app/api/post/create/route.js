@@ -1,11 +1,11 @@
 import { join } from 'path';
 import { writeFile } from 'fs/promises';
+import { connectToDB } from '@/utils/db';
+import Recipe from '@/models/Recipe';
+import User from '@/models/User';
 
 
 // import multer from 'multer'; // For image upload handling
-// import { connectToDB } from '@/utils/db';
-// import Recipe from '@/models/Recipe';
-// import User from '@/models/User';
 
 
 
@@ -99,7 +99,7 @@ export async function POST(req, res) {
         ingredients: ingredients,
         instructions: instructions,
         image: image.name,
-        author: user
+        author: authorId
     });
 
     await newRecipe.save();
