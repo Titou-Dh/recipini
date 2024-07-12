@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react'
+import Link from 'next/link'
 import Post from './Post'
 
 function Feed() {
@@ -12,13 +13,21 @@ function Feed() {
         , [])
 
     return (
-        <div>
-            {
-                posts.map(post => (
-                    <Post title={post.title} description={post.description} time={post.createdAt} image={post.image} name={post.authorName} />
-                ))
+        <>
+            {posts && 
+
+                    posts.map(post => (
+                        <Post title={post.title} description={post.description} time={post.createdAt} image={post.image} name={post.authorName} />
+                    ))
+
             }
-        </div>
+            {posts.length == 0 && (
+                <div className=" flex flex-col items-center justify-center h-96">
+                    <h1 className="text-2xl text-muted-foreground dark:text-gray-300 my-3" >No posts available</h1>
+                    <p>Click <Link className='underline text-bold text-blue-600 ' href="/community/create">here</Link> to Create some new recipes!</p>
+                </div>
+            )}
+        </>
     )
 }
 

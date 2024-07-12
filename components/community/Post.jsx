@@ -21,8 +21,8 @@ export default function Post({ title, description, image, name, time }) {
                 <img src={`/uploads/${image}`} alt="Recipe Image" className="w-full h-[400px] object-cover" />
             </div>
             <div className="p-4">
-                <h2 className="text-2xl font-bold dark:text-white">{title}</h2>
-                <p className="text-muted-foreground text-lg mt-2 dark:text-gray-300">
+                <h2 className="text-wrap text-2xl font-bold dark:text-white">{title}</h2>
+                <p className="text-lg mt-2 dark:text-gray-300">
                     {description}
                 </p>
             </div>
