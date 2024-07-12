@@ -1,4 +1,6 @@
-export default function Post() {
+import { Input } from "../ui/input";
+
+export default function Post({title, description, image, name, time}) {
     return (
         <div className="bg-white dark:bg-transparent border rounded-lg shadow-md w-full max-w-lg mx-auto m-5">
             <div className="p-4 border-b">
@@ -7,21 +9,21 @@ export default function Post() {
                         <img className="h-10 w-10 rounded-full" src="/assets/images/default-pic.jpg" alt="User Avatar" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-medium dark:text-white">John Doe</h3>
+                        <h3 className="text-lg font-medium dark:text-white">{name}</h3>
                         <p className="text-sm text-muted-foreground dark:text-gray-300">
                             Shared a recipe
-                            <span className="ml-2 text-xs bg-muted px-2 py-1 rounded-full">2h</span>
+                            <span className="ml-2 text-xs bg-muted px-2 py-1 rounded-full">{time}</span>
                         </p>
                     </div>
                 </div>
             </div>
             <div>
-                <img src="/assets/images/carbonara.jpg" alt="Recipe Image" className="w-full h-[400px] object-cover" />
+                <img src={`/uploads/${image}`} alt="Recipe Image" className="w-full h-[400px] object-cover" />
             </div>
             <div className="p-4">
-                <h2 className="text-2xl font-bold dark:text-white">Homemade Pasta Carbonara</h2>
+                <h2 className="text-2xl font-bold dark:text-white">{title}</h2>
                 <p className="text-muted-foreground text-lg mt-2 dark:text-gray-300">
-                    A classic Italian pasta dish with a creamy, eggy sauce and crispy pancetta.
+                    {description}
                 </p>
             </div>
             <div className="border-t">
@@ -99,7 +101,7 @@ export default function Post() {
             </div>
             <div className="border-t p-4">
                 <div className="flex items-center space-x-4">
-                    <textarea
+                    <Input
                         id="comment"
                         rows={3}
                         className="block w-full rounded-md border-muted bg-muted/20 px-3 py-2 text-sm placeholder-muted-foreground dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 focus:border-primary focus:ring-primary"

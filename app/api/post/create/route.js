@@ -99,7 +99,9 @@ export async function POST(req, res) {
         ingredients: ingredients,
         instructions: instructions,
         image: image.name,
-        author: authorId
+        authorId: authorId,
+        authorName: user.name,
+        authorPic: user.profilePicture
     });
 
     await newRecipe.save();
