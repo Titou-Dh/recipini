@@ -16,7 +16,7 @@ function Nav() {
                     <Image width={90} height={36} src="/assets/images/logo-light.png" />
                     <span className="text-lg font-semibold"></span>
                 </Link> */}
-                <Link href="#" className="text-lg hover:scale-[1.1] transition-all font-medium hover:underline underline-offset-4 flex gap-2 dark:text-white" prefetch={false}>
+                <Link href="/community" className="text-lg hover:scale-[1.1] transition-all font-medium hover:underline underline-offset-4 flex gap-2 dark:text-white" prefetch={false}>
                     <FontAwesomeIcon icon={faHouse} className="h-6 w-6" />
                     <span className="hidden md:flex">Browse</span>
                 </Link>

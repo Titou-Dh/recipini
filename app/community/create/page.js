@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { useState, useCallback } from "react"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { useSession } from 'next-auth/react';
+import { toast } from '@/components/ui/use-toast';
 
 export default function page() {
     const [title, setTitle] = useState('')
@@ -18,16 +19,16 @@ export default function page() {
 
 
 
-    const handleDrop = useCallback((acceptedFiles) => {
-        setImages((prevImages) => [...prevImages, ...acceptedFiles])
-    }, [])
-    const handleRemoveImage = (index) => {
-        setImages((prevImages) => prevImages.filter((_, i) => i !== index))
-    }
-    const [showBrowse, setShowBrowse] = useState(false)
-    const handleBrowseClick = () => {
-        setShowBrowse(true)
-    }
+    // const handleDrop = useCallback((acceptedFiles) => {
+    //     setImages((prevImages) => [...prevImages, ...acceptedFiles])
+    // }, [])
+    // const handleRemoveImage = (index) => {
+    //     setImages((prevImages) => prevImages.filter((_, i) => i !== index))
+    // }
+    // const [showBrowse, setShowBrowse] = useState(false)
+    // const handleBrowseClick = () => {
+    //     setShowBrowse(true)
+    // }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -46,9 +47,21 @@ export default function page() {
         })
 
         if (res.ok) {
-            alert('Upload successful');
+            toast(
+                {
+                    title: 'Recipe created successfully',
+                    message: 'Your recipe has been successfully created',
+                    type: 'success'
+                }
+            )
         } else {
-            alert('Upload failed');
+            toast(
+                {
+                    title: 'An error occured',
+                    message: 'An error occured while creating the recipe',
+                    variant: 'destructive'
+                }
+            )
         }
     };
 

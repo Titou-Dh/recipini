@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button"
 import Image from 'next/image';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 
 import {
     DropdownMenu,

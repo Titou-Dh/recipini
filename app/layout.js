@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Provider from "@/components/Provider";
+import { Toaster } from "@/components/ui/toaster";
 
 
 
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
             }}
           />
           {children}
+          <Toaster />
         </body>
       </Provider>
 
