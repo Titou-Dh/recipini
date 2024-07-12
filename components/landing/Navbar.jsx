@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button"
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 import {
     DropdownMenu,
@@ -15,6 +16,7 @@ import {
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const { data: session } = useSession();
 
     return (
         <nav className="bg-transparent shadow-md  dark:border-b ">
@@ -41,14 +43,19 @@ const Navbar = () => {
                     </div>
                     <div className="hidden sm:flex sm:items-center">
 
-                        <DropdownMenu color="primary">
-                            <DropdownMenuTrigger><Button>Login / Signup</Button></DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <Link href="/login"><DropdownMenuItem>Login</DropdownMenuItem></Link>
-                                <DropdownMenuSeparator />
-                                <Link href="/signup"><DropdownMenuItem>Signup</DropdownMenuItem></Link>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        {session ? (
+                            <Button className="mr-4" onClick={() => signOut({ callbackUrl: "/login" })}>Logout</Button>
+                        ):(
+                            <DropdownMenu color="primary">
+                                <DropdownMenuTrigger><Button className="w-full">Login / Signup</Button></DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <Link href="/login"><DropdownMenuItem>Login</DropdownMenuItem></Link>
+                                    <Link href="/signup"><DropdownMenuItem>Signup</DropdownMenuItem></Link>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        )
+
+                        }
                     </div>
                     <div className="-mr-2 flex items-center sm:hidden">
                         <button
