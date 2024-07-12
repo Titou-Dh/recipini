@@ -87,8 +87,8 @@ export async function POST(req, res) {
 
     await connectToDB();
 
-    const user = User.findById(authorId);
-
+    const user = await User.findById({ _id: authorId });
+    console.log(user, 'user');
     if (!user) {
         return new Response(JSON.stringify({ message: 'User not found' }), { status: 404 });
     }
@@ -100,7 +100,7 @@ export async function POST(req, res) {
         instructions: instructions,
         image: image.name,
         authorId: authorId,
-        authorName: user.name,
+        authorName: user.username,
         authorPic: user.profilePicture
     });
 
