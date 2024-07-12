@@ -12,7 +12,7 @@ export default function page() {
     const [ingredients, setIngredients] = useState('')
     const [description, setDescription] = useState('')
     const [steps, setSteps] = useState('')
-    const [images, setImages] = useState([])
+    const [image, setImage] = useState([])
     const { data: session } = useSession();
 
 
@@ -31,21 +31,17 @@ export default function page() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-
-
-
+        const data = new FormData();
+        data.append('title', title);
+        data.append('ingredients', ingredients);
+        data.append('description', description);
+        data.append('instructions', steps);
+        data.append('authorId', session.user.id);
+        data.append('image', image);
 
         const res = await fetch('/api/post/create', {
             method: 'POST',
-            body: JSON.stringify({
-                title : title,
-                ingredients:ingredients,
-                description:description,
-                steps:steps,
-                authorId: session.user.id,
-                images:images
-            }),
+            body:data
 
         })
 
@@ -103,7 +99,7 @@ export default function page() {
                     </div>
                     <div className='flex flex-col'>
                         <label htmlFor='image' className='my-2'>Image:</label>
-                        <Card>
+                        {/* <Card>
                             <CardHeader>
                                 <CardTitle>Upload Images</CardTitle>
                                 <CardDescription>Drag and drop your images here or click to upload.</CardDescription>
@@ -114,7 +110,7 @@ export default function page() {
                                     onClick={handleBrowseClick}
                                 >
                                     {showBrowse ? (
-                                        <input type="file" multiple className="w-full" />
+                                        <input type="file" className="w-full" />
                                     ) : (
                                         <>
                                             <UploadIcon className="w-8 h-8 text-muted-foreground" />
@@ -144,7 +140,8 @@ export default function page() {
                                     ))}
                                 </div>
                             </CardContent>
-                        </Card>
+                        </Card> */}
+                        <Input onChange={(e)=>setImage(e.target.files?.[0])} type="file" className="w-full" />
                     </div>
                     <div className='flex justify-end gap-4'>
                         <Button variant='secondary' className='mt-4 ml-2' type="reset" >Cancel</Button>
