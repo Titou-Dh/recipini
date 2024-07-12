@@ -1,6 +1,6 @@
 import { Input } from "../ui/input";
 
-export default function Post({title, description, image, name, time}) {
+export default function Post({ title, description, image, name, time }) {
     return (
         <div className="bg-white dark:bg-transparent border rounded-lg shadow-md w-full max-w-lg mx-auto m-5">
             <div className="p-4 border-b">

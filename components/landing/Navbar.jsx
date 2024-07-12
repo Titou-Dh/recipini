@@ -45,6 +45,7 @@ const Navbar = () => {
                             <DropdownMenuTrigger><Button>Login / Signup</Button></DropdownMenuTrigger>
                             <DropdownMenuContent>
                                 <Link href="/login"><DropdownMenuItem>Login</DropdownMenuItem></Link>
+                                <DropdownMenuSeparator />
                                 <Link href="/signup"><DropdownMenuItem>Signup</DropdownMenuItem></Link>
                             </DropdownMenuContent>
                         </DropdownMenu>

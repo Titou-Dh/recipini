@@ -32,7 +32,7 @@ function Nav() {
                     <FontAwesomeIcon icon={faUser} className="h-6 w-6" />
                     <span className="hidden md:flex">Profile</span>
                 </Link>
-                <Link href="#" onClick={() => signOut({callbackUrl:"/login"})} className="text-lg hover:scale-[1.1] transition-all font-medium hover:underline underline-offset-4 flex gap-2 dark:text-white" prefetch={false}>
+                <Link href="#" onClick={() => signOut({ callbackUrl: "/login" })} className="text-lg hover:scale-[1.1] transition-all font-medium hover:underline underline-offset-4 flex gap-2 dark:text-white" prefetch={false}>
                     <FontAwesomeIcon icon={faSignOut} className="h-6 w-6" />
                     <span className="hidden md:flex">Logout</span>
                 </Link>

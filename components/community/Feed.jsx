@@ -14,9 +14,9 @@ function Feed() {
     return (
         <div>
             {
-            posts.map(post => (
-                <Post title={post.title} description={post.description} time={post.createdAt} image={post.image} name={post.authorName} />
-            ))
+                posts.map(post => (
+                    <Post title={post.title} description={post.description} time={post.createdAt} image={post.image} name={post.authorName} />
+                ))
             }
         </div>
     )
