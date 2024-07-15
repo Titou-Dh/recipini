@@ -4,6 +4,8 @@ import Recipe from '@/models/Recipe';
 import User from '@/models/User';
 import { Readable } from 'stream';
 import path from 'path';
+import { writeFile } from 'fs/promises';
+import { join } from 'path';
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -34,27 +36,44 @@ export const POST = async (req, res) => {
         return new Response(JSON.stringify({ message: 'User not found' }), { status: 404 });
     }
 
-    // Convert the image to a buffer
-    const imageBuffer = Buffer.from(await image.arrayBuffer());
+    // // Convert the image to a buffer
+    // const imageBuffer = Buffer.from(await image.arrayBuffer());
 
-    // Create a stream from the buffer
-    const imageStream = Readable.from(imageBuffer);
+    // // Create a stream from the buffer
+    // const imageStream = Readable.from(imageBuffer);
 
-    const public_id = path.parse(image.name).name;
-    // Upload the image stream to Cloudinary
+    const public_id = Math.random().toString(36).substring(2, 14);
+    // // Upload the image stream to Cloudinary
 
-    const uploadStream = await cloudinary.uploader.upload_stream(
-        {
-            upload_preset: 'ml_default',
-            folder: 'recipes',
-            use_filename: true,
+    // const uploadStream = await cloudinary.uploader.upload_stream(
+    //     {
+    //         upload_preset: 'recipini-app',
+    //     }
+    // );
+    // await imageStream.pipe(uploadStream);
+
+
+    const bytes = await image.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    const path = join('public', 'uploads', image.name);
+    await writeFile(path, buffer);
+
+    const image_path = path
+    await cloudinary.v2.uploader.upload(image_path, { public_id: public_id }, function (error, result) {
+        if (error) {
+            console.error(error);
+            return new Response(JSON.stringify({ message: 'Image not uploaded' }), { status: 404 });
         }
+        console.log(result, 'result');
+
+    }
     );
-    await imageStream.pipe(uploadStream);
+    console.log(public_id, 'public_id');
+    console.log(image_path, 'image_path');
 
 
-
-    console.log(uploadStream, 'uploadStream');
+    // console.log(uploadStream, 'uploadStream');
 
 
     const newRecipe = await Recipe.create({
