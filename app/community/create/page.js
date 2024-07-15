@@ -3,10 +3,11 @@ import React from 'react'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import { useState, useCallback } from "react"
+import { useState } from "react"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { useSession } from 'next-auth/react';
 import { toast } from '@/components/ui/use-toast';
+import { set } from 'mongoose';
 
 export default function page() {
     const [title, setTitle] = useState('')
@@ -15,6 +16,7 @@ export default function page() {
     const [steps, setSteps] = useState('')
     const [image, setImage] = useState([])
     const { data: session } = useSession();
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
 
 
@@ -40,6 +42,8 @@ export default function page() {
         data.append('authorId', session.user.id);
         data.append('image', image);
 
+        setIsSubmitting(true)
+
         const res = await fetch('/api/post/create', {
             method: 'POST',
             body:data
@@ -50,15 +54,15 @@ export default function page() {
             toast(
                 {
                     title: 'Recipe created successfully',
-                    message: 'Your recipe has been successfully created',
+                    description: 'Your recipe has been created successfully',
                     type: 'success'
                 }
             )
+            setIsSubmitting(false)
         } else {
             toast(
                 {
                     title: 'An error occured',
-                    message: 'An error occured while creating the recipe: ',
                     description:res.message,
                     variant: 'destructive'
                 }
@@ -159,7 +163,9 @@ export default function page() {
                     </div>
                     <div className='flex justify-end gap-4'>
                         <Button variant='secondary' className='mt-4 ml-2' type="reset" >Cancel</Button>
-                        <Button color='primary' className='mt-4' type="submit">Create Recipe</Button>
+                        {
+                            isSubmitting ? <Button  className='mt-4' type="submit" disabled>Creating...</Button> : <Button className='mt-4' type="submit">Create</Button>
+                        }
                     </div>
                 </form>
             </div>
