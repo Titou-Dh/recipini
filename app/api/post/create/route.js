@@ -49,7 +49,7 @@ export const POST = async (req, res) => {
         return result;
     }
     );
-    const url = result.url;
+    const url = result.secure_url;
     console.log(public_id, 'public_id');
     console.log(image_path, 'image_path');
     const newRecipe = await Recipe.create({
