@@ -18,7 +18,7 @@ export default function Post({ title, description, image, name, time }) {
                 </div>
             </div>
             <div>
-                <img src={`http://res.cloudinary.com/dyhjyqtr3/image/upload/v1721049817/${image}`} alt="Recipe Image" className="w-full h-[400px] object-cover" />
+                <img src={`https://res.cloudinary.com/dyhjyqtr3/image/upload/v1721049817/${image}`} alt="Recipe Image" className="w-full h-[400px] object-cover" />
             </div>
             <div className="p-4">
                 <h2 className="text-wrap text-2xl font-bold dark:text-white">{title}</h2>
