@@ -40,15 +40,16 @@ export const POST = async (req, res) => {
     const path = join('public', 'uploads', image.name);
     await writeFile(path, buffer);
     const image_path = path
-    await cloudinary.v2.uploader.upload(image_path, { public_id: public_id }, function (error, result) {
+    const result = await cloudinary.v2.uploader.upload(image_path, { public_id: public_id }, function (error, result) {
         if (error) {
             console.error(error);
             return new Response(JSON.stringify({ message: 'Image not uploaded' }), { status: 404 });
         }
         console.log(result, 'result');
-        const url = result.url;
+        return result;
     }
     );
+    const url = result.url;
     console.log(public_id, 'public_id');
     console.log(image_path, 'image_path');
     const newRecipe = await Recipe.create({
