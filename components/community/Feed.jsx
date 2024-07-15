@@ -18,7 +18,7 @@ function Feed() {
             {posts && 
 
                     posts.map((post, index) => (
-                        <Post key={index} title={post.title} description={post.description} time={post.createdAt} image={post.image} name={post.authorName} idPost ={post._id} />
+                        <Post key={index} title={post.title} description={post.description} time={post.createdAt} image={post.image} name={post.authorName} idPost ={post._id} likes={post.likes} comments={post.comments} />
                     ))
 
             }

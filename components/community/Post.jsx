@@ -1,22 +1,50 @@
 "use client"
 import { Input } from "../ui/input";
-import { BookMarked, Heart } from "lucide-react";
+import { BookMarked, Heart, MessageCircleMore, Link as LinkIcon } from "lucide-react";
 import { toast } from "../ui/use-toast";
 import { useSession, } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from "../ui/sheet";
+import { Card } from "../ui/card";
 
-export default function Post({ title, description, image, name, time, idPost }) {
+export default function Post({ title, description, image, name, time, idPost, likes, comments }) {
     const [liked, setLiked] = useState(false);
     const { data: session } = useSession();
+    const [comment, setComment] = useState('');
+    // const [comments, setComments] = useState([]);
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(window.location.href);
+        toast({
+            title: 'Link copied',
+            description: 'The link has been copied to your clipboard',
+        })
+    }
+
+    // const loadComments = async () => {
+    //     try {
+    //         const res = await fetch(`/api/post/${idPost}/comments`, {
+    //             method: 'GET',
+    //         })
+    //         console.log(res);
+    //         if (res.ok) {
+    //             const data = await res.json();
+    //             setComments(data);
+    //             console.log(data);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error loading comments:', error);
+    //     }
+    // }
+
 
     useEffect(() => {
         const checkLiked = async () => {
             const idUser = session.user.id;
             try {
-                const res = await fetch('/api/post/like', {
-                    method: 'GET',
-                    body: JSON.stringify({ idPost: idPost, idUser: idUser })
+                const res = await fetch(`/api/post/like?idPost=${idPost}&idUser=${idUser}`, {
+                    method: 'GET'
                 })
                 console.log(res);
                 if (res.ok) {
@@ -31,8 +59,38 @@ export default function Post({ title, description, image, name, time, idPost }) 
 
     const handleComment = async () => {
         console.log('comment');
-        try{
-            const 
+        try {
+            const res = await fetch('/api/post/comment', {
+                method: 'POST',
+                body: JSON.stringify({ idPost: idPost, idUser: session.user.id, comment: comment })
+            })
+            console.log(res);
+            if (res.ok) {
+                toast(
+                    {
+                        title: 'Comment posted successfully',
+                        description: 'Your comment has been posted successfully',
+                        type: 'success'
+                    }
+                )
+            } else {
+                toast(
+                    {
+                        title: 'Comment not posted',
+                        description: 'Your comment has not been posted',
+                        variant: 'destructive'
+                    }
+                )
+            }
+
+        }
+        catch (error) {
+            console.error('Error posting comment:', error);
+            toast({
+                title: 'An error occured',
+                description: 'An error occured while posting this comment' + error,
+                variant: 'destructive'
+            })
         }
     }
 
@@ -57,7 +115,7 @@ export default function Post({ title, description, image, name, time, idPost }) 
                     }
                 )
                 setLiked(true);
-            }else if (res.status == 400) {
+            } else if (res.status == 400) {
                 toast(
                     {
                         title: 'Post unliked successfully',
@@ -160,7 +218,7 @@ export default function Post({ title, description, image, name, time, idPost }) 
             </div>
             <div className="border-t">
                 <div className="flex justify-between items-center p-4">
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center justify-around w-full">
                         {
                             liked ? (
                                 <button className="flex items-center space-x-2 text-muted-foreground text-red-800 hover:text-primary" onClick={() => handleLike()}>
@@ -174,56 +232,52 @@ export default function Post({ title, description, image, name, time, idPost }) 
                                 </button>
                             )
                         }
-                        <button className="flex items-center space-x-2 text-muted-foreground dark:text-gray-300 hover:text-primary">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                                />
-                            </svg>
-                            <span>Comment</span>
-                        </button>
+
+                        <Sheet>
+                            <SheetTrigger className="flex items-center space-x-2 text-muted-foreground dark:text-gray-300 hover:text-primary">
+                                <MessageCircleMore size={20} />
+                                <span>Comments</span>
+                            </SheetTrigger>
+                            <SheetContent className="w-[400px] sm:w-[540px]">
+                                <SheetHeader>
+                                    <SheetTitle>Comments</SheetTitle>
+                                    <SheetDescription>
+                                        {
+                                            comments ? (
+                                                comments.map((comment, index) => (
+                                                    <Comment key={index} comment={comment.comment} user={comment.user} />
+                                                ))
+                                            ) : (
+                                                <p>No comments</p>
+                                            )
+                                        }
+                                    </SheetDescription>
+                                </SheetHeader>
+                            </SheetContent>
+                        </Sheet>
                         <button className="flex items-center space-x-2 text-muted-foreground dark:text-gray-300 hover:text-primary" onClick={() => handleSave()}>
                             <BookMarked size={20} />
                             <span>save</span>
                         </button>
+                        <button className="flex items-center space-x-2 text-muted-foreground dark:text-gray-300 hover:text-primary" onClick={() => handleCopy()}>
+                            <LinkIcon size={20} />
+                            <span>Copy link</span>
+                        </button>
                     </div>
-                    <button className="text-muted-foreground dark:text-gray-300 hover:text-primary">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-                            />
-                        </svg>
-                    </button>
                 </div>
             </div>
             <div className="border-t p-4">
-                <form onSubmit={()=> handleComment()} className="flex items-center space-x-4">
+                <form className="flex items-center space-x-4">
                     <Input
                         id="comment"
                         rows={3}
                         className="block w-full rounded-md border-muted bg-muted/20 px-3 py-2 text-sm placeholder-muted-foreground dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 focus:border-primary focus:ring-primary"
                         placeholder="Write your comment"
+                        onChange={(e) => setComment(e.target.value)}
                     />
                     <Button
-                        type="submit"
+                        type="button"
+                        onClick={handleComment}
                         className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-1 focus:ring-primary focus:ring-offset-1"
                     >
                         Send
@@ -231,5 +285,42 @@ export default function Post({ title, description, image, name, time, idPost }) 
                 </form>
             </div>
         </div>
+    )
+}
+
+
+
+function Comment({ comment, user }) {
+    const [userData, setUserData] = useState([]);
+    const getUser = async () => {
+        const res = await fetch('/api/user', {
+            method: 'POST',
+            body: JSON.stringify({ user: user })
+        })
+        console.log(res);
+        if (res.ok) {
+            const data = await res.json();
+            setUserData(data);
+        }
+    }
+
+    useEffect(() => {   
+        getUser();
+    }
+    , [])
+    
+
+
+
+    return (
+        <Card >
+            <div className="flex items-center space-x-2 p-7">
+                <img className="h-8 w-8 rounded-full" src={userData.profilPicture} alt="User Avatar" />
+                <div>
+                    <h3 className="text-lg font-medium dark:text-white">{userData.name}</h3>
+                    <p className="text-sm text-muted-foreground dark:text-gray-300">{comment}</p>
+                </div>
+            </div>
+        </Card>
     )
 }
