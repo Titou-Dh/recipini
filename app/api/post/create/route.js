@@ -2,9 +2,10 @@ import cloudinary from 'cloudinary';
 import { connectToDB } from '@/utils/db';
 import Recipe from '@/models/Recipe';
 import User from '@/models/User';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
-import { url } from 'inspector';
+
+import { Readable } from 'stream';
+
+
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -35,12 +36,8 @@ export const POST = async (req, res) => {
     }
 
     const public_id = Math.random().toString(36).substring(2, 14);
-    const bytes = await image.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const path = join('public', 'uploads', image.name);
-    await writeFile(path, buffer);
-    const image_path = path
-    const result = await cloudinary.v2.uploader.upload(image_path, { public_id: public_id }, function (error, result) {
+
+    const result = await cloudinary.v2.uploader.upload_stream({ public_id: public_id }, function (error, result) {
         if (error) {
             console.error(error);
             return new Response(JSON.stringify({ message: 'Image not uploaded' }), { status: 404 });
@@ -49,15 +46,20 @@ export const POST = async (req, res) => {
         return result;
     }
     );
-    const url = result.secure_url;
+
+    const readabletream = Readable.from(image.stream());
+    readabletream.pipe(result);
+
+    const url =  result.secure_url;
+    console.log(url, 'url');
     console.log(public_id, 'public_id');
-    console.log(image_path, 'image_path');
+
     const newRecipe = await Recipe.create({
         title: title,
         description: description,
         ingredients: ingredients,
         instructions: instructions,
-        image: url,
+        image: public_id,
         authorId: authorId,
         authorName: user.username,
         authorPic: user.profilePicture
