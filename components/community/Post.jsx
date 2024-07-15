@@ -5,34 +5,53 @@ import { toast } from "../ui/use-toast";
 import { useSession } from "next-auth/react";
 
 export default function Post({ title, description, image, name, time, idPost }) {
-    const { data: sess } = useSession();
-    const handleSave = (idPost) => {
+    const { data: session } = useSession();
+    const handleSave = async () => {
         console.log(idPost);
-        const res = fetch('/api/post/save', {
-            method: 'POST',
-            body: JSON.stringify({ idPost, sess.user.id })
-                
+        const idUser = session.user.id;
+        try {
+            const res = await fetch('/api/post/save', {
+                method: 'POST',
+                body: JSON.stringify({ idPost: idPost, idUser: idUser })
 
-        })
 
-        if (res.ok) {
-            toast(
-                {
-                    title: 'Post saved successfully',
-                    description: 'This post has been saved successfully',
-                    type: 'success'
-                }
-            )
-        }else{
-            toast(
-                {
-                    title: 'Post not saved',
-                    description: 'This post has not been saved',
-                    variant: 'destructive'
-                }
-            )
+            })
+            console.log(res);
+
+            if (res.ok) {
+                toast(
+                    {
+                        title: 'Post saved successfully',
+                        description: 'This post has been saved successfully',
+                        type: 'success'
+                    }
+                )
+            } else if (res.status == 400) {
+                toast(
+                    {
+                        title: 'Post already saved',
+                        description: 'This post has already been saved',
+                        variant: 'destructive'
+                    }
+                )
+            } else {
+                toast(
+                    {
+                        title: 'Post not saved',
+                        description: 'This post has not been saved',
+                        variant: 'destructive'
+                    }
+                )
+            }
+        } catch (error) {
+            console.error('Error saving post:', error);
+            toast({
+                title: 'An error occured',
+                description: 'An error occured while saving this post' + error,
+                variant: 'destructive'
+            })
         }
-        
+
 
     }
 
@@ -98,7 +117,7 @@ export default function Post({ title, description, image, name, time, idPost }) 
                             </svg>
                             <span>Comment</span>
                         </button>
-                        <button className="flex items-center space-x-2 text-muted-foreground dark:text-gray-300 hover:text-primary" onClick={(idPost) => handleSave(idPost)}>
+                        <button className="flex items-center space-x-2 text-muted-foreground dark:text-gray-300 hover:text-primary" onClick={() => handleSave()}>
                             <BookMarked size={20} />
                             <span>save</span>
                         </button>
