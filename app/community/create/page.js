@@ -58,7 +58,8 @@ export default function page() {
             toast(
                 {
                     title: 'An error occured',
-                    message: 'An error occured while creating the recipe: ' + res.message,
+                    message: 'An error occured while creating the recipe: ',
+                    description:res.message,
                     variant: 'destructive'
                 }
             )
