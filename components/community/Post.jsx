@@ -1,11 +1,89 @@
 "use client"
 import { Input } from "../ui/input";
-import { BookMarked } from "lucide-react";
+import { BookMarked, Heart } from "lucide-react";
 import { toast } from "../ui/use-toast";
-import { useSession } from "next-auth/react";
+import { useSession, } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
 
 export default function Post({ title, description, image, name, time, idPost }) {
+    const [liked, setLiked] = useState(false);
     const { data: session } = useSession();
+
+    useEffect(() => {
+        const checkLiked = async () => {
+            const idUser = session.user.id;
+            try {
+                const res = await fetch('/api/post/like', {
+                    method: 'GET',
+                    body: JSON.stringify({ idPost: idPost, idUser: idUser })
+                })
+                console.log(res);
+                if (res.ok) {
+                    setLiked(true);
+                }
+            } catch (error) {
+                console.error('Error checking like:', error);
+            }
+        }
+        checkLiked();
+    }, [])
+
+    const handleComment = async () => {
+        console.log('comment');
+        try{
+            const 
+        }
+    }
+
+
+
+    const handleLike = async () => {
+        console.log(idPost);
+        const idUser = session.user.id;
+        try {
+            const res = await fetch('/api/post/like', {
+                method: 'POST',
+                body: JSON.stringify({ idPost: idPost, idUser: idUser })
+            })
+            console.log(res);
+
+            if (res.ok) {
+                toast(
+                    {
+                        title: 'Post liked successfully',
+                        description: 'This post has been liked successfully',
+                        type: 'success'
+                    }
+                )
+                setLiked(true);
+            }else if (res.status == 400) {
+                toast(
+                    {
+                        title: 'Post unliked successfully',
+                        description: 'This post has been unliked successfully',
+
+                    }
+                )
+                setLiked(false);
+            } else {
+                toast(
+                    {
+                        title: 'Post not liked',
+                        description: 'This post has not been liked',
+                        variant: 'destructive'
+                    }
+                )
+            }
+        } catch (error) {
+            console.error('Error saving post:', error);
+            toast({
+                title: 'An error occured',
+                description: 'An error occured while liking this post' + error,
+                variant: 'destructive'
+            })
+        }
+    }
     const handleSave = async () => {
         console.log(idPost);
         const idUser = session.user.id;
@@ -83,23 +161,19 @@ export default function Post({ title, description, image, name, time, idPost }) 
             <div className="border-t">
                 <div className="flex justify-between items-center p-4">
                     <div className="flex items-center space-x-4">
-                        <button className="flex items-center space-x-2 text-muted-foreground dark:text-gray-300 hover:text-primary">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                                />
-                            </svg>
-                            <span>Like</span>
-                        </button>
+                        {
+                            liked ? (
+                                <button className="flex items-center space-x-2 text-muted-foreground text-red-800 hover:text-primary" onClick={() => handleLike()}>
+                                    <Heart size={20} />
+                                    <span>Unlike</span>
+                                </button>
+                            ) : (
+                                <button className="flex items-center space-x-2 text-muted-foreground dark:text-gray-300 hover:text-primary" onClick={() => handleLike()}>
+                                    <Heart size={20} />
+                                    <span>Like</span>
+                                </button>
+                            )
+                        }
                         <button className="flex items-center space-x-2 text-muted-foreground dark:text-gray-300 hover:text-primary">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -141,20 +215,20 @@ export default function Post({ title, description, image, name, time, idPost }) 
                 </div>
             </div>
             <div className="border-t p-4">
-                <div className="flex items-center space-x-4">
+                <form onSubmit={()=> handleComment()} className="flex items-center space-x-4">
                     <Input
                         id="comment"
                         rows={3}
                         className="block w-full rounded-md border-muted bg-muted/20 px-3 py-2 text-sm placeholder-muted-foreground dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 focus:border-primary focus:ring-primary"
                         placeholder="Write your comment"
                     />
-                    <button
-                        type="button"
+                    <Button
+                        type="submit"
                         className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-1 focus:ring-primary focus:ring-offset-1"
                     >
                         Send
-                    </button>
-                </div>
+                    </Button>
+                </form>
             </div>
         </div>
     )
