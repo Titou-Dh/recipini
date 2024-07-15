@@ -55,7 +55,6 @@ export default function page() {
                 {
                     title: 'Recipe created successfully',
                     description: 'Your recipe has been created successfully',
-                    type: 'success'
                 }
             )
             setIsSubmitting(false)
