@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const Hero = () => {
     return (
-        <div className="relative overflow-hidden flex md:flex-row flex-col items-center min-h-screen px-20 md:px-52">
+        <div className="relative overflow-hidden logo-light  flex md:flex-row flex-col items-center min-h-screen px-20 md:px-52">
             <div className="absolute inset-0 w-screen top-[50%] flex items-center left-[20%] justify-center">
                 <div className="bg-primaryL w-96 h-52 rounded-full filter blur-3xl"></div>
             </div>
@@ -26,8 +26,7 @@ const Hero = () => {
             <Image
                 src="/assets/images/Recipe book-pana.svg" // Replace with your image path
                 alt="Delicious food"
-                className="z-10"
-                objectFit="cover"
+                className="z-10 w-auto h-auto"
                 width={500}
                 height={500}
             />

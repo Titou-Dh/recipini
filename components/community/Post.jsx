@@ -293,11 +293,11 @@ export default function Post({ title, description, image, name, time, idPost, li
 function Comment({ comment, user }) {
     const [userData, setUserData] = useState([]);
     const getUser = async () => {
-        const res = await fetch('/api/user', {
+        const res = await fetch('api/user', {
             method: 'POST',
-            body: JSON.stringify({ user: user })
+            body: JSON.stringify({ idUser :user})
         })
-        console.log(res);
+        console.log("r=============================>",res);
         if (res.ok) {
             const data = await res.json();
             setUserData(data);

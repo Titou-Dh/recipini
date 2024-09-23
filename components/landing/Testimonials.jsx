@@ -13,7 +13,7 @@ const testimonials = [
         image: '/assets/images/jhon.jpg',
     },
     {
-        name: 'John Smith',
+        name: 'Jane Smith',
         feedback: 'I love being able to share my recipes with others and get feedback from fellow food enthusiasts.',
         image: '/assets/images/jhon.jpg',
     },
@@ -34,8 +34,8 @@ const Testimonials = () => {
                                 <Image
                                     src={testimonial.image}
                                     alt={testimonial.name}
-                                    layout="fill"
-                                    objectFit="cover"
+                                    height={500}
+                                    width={500}
                                     className="rounded-full"
                                 />
                             </div>

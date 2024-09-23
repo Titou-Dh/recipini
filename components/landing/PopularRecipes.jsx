@@ -34,8 +34,8 @@ const PopularRecipes = () => {
                                 <Image
                                     src={recipe.image}
                                     alt={recipe.title}
-                                    layout="fill"
-                                    objectFit="cover"
+                                    width={500}
+                                    height={500}
                                     className="w-full h-full"
                                 />
                             </div>

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button"
 import Image from 'next/image';
 import Link from 'next/link';
@@ -13,18 +13,23 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
+    const [isMounted, setIsMounted] = useState(false);
+
+    // Ensure the component is mounted before rendering session-dependent components
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     return (
-        <nav className="bg-transparent shadow-md  dark:border-b ">
+        <nav className="bg-transparent shadow-md dark:border-b">
             <div className="md:px-32 lg:px-48 px-11 mx-auto">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex">
                         <Link className="m-" href="/">
-                            <Image src="/assets/images/logo-light.png" alt='logo' height={150} width={120} />
+                            <Image src="/assets/images/logo-light.png" alt='logo' height={150} width={120} className='h-auto w-auto' />
                         </Link>
                     </div>
                     <div className="hidden sm:ml-6 sm:flex sm:space-x-8 md:m-auto">
@@ -42,20 +47,18 @@ const Navbar = () => {
                         </Link>
                     </div>
                     <div className="hidden sm:flex sm:items-center">
-
-                        {session ? (
+                        {isMounted && status === "authenticated" ? (
                             <Button className="mr-4" onClick={() => signOut({ callbackUrl: "/login" })}>Logout</Button>
-                        ):(
+                        ) : (
                             <DropdownMenu color="primary">
-                                <DropdownMenuTrigger><Button className="w-full">Login / Signup</Button></DropdownMenuTrigger>
+                                <Button className="w-full">Login / Signup</Button>
+                                <DropdownMenuTrigger></DropdownMenuTrigger>
                                 <DropdownMenuContent>
                                     <Link href="/login"><DropdownMenuItem>Login</DropdownMenuItem></Link>
                                     <Link href="/signup"><DropdownMenuItem>Signup</DropdownMenuItem></Link>
                                 </DropdownMenuContent>
                             </DropdownMenu>
-                        )
-
-                        }
+                        )}
                     </div>
                     <div className="-mr-2 flex items-center sm:hidden">
                         <button
