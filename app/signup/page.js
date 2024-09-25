@@ -14,6 +14,7 @@ import {
     AlertTitle,
 } from "@/components/ui/alert"
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 
 export default function Signup() {
@@ -23,6 +24,7 @@ export default function Signup() {
     const [message, setMessage] = useState("");
     const [providers, setProviders] = useState(null);
     const router = useRouter();
+    const { data: session, status } = useSession();
 
 
     const handleSignUp = async () => {
@@ -120,7 +122,9 @@ export default function Signup() {
                                     handleSignUp();
                                 }}
                             >
-                                Create an account
+                                {
+                                    status === "loading" ? "Loading..." : "Login"
+                                }
                             </Button>
                             <>
                                 {providers &&

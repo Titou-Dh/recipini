@@ -28,7 +28,7 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const router = useRouter();
 
     const handleLogin = async () => {
@@ -106,7 +106,9 @@ export default function Login() {
                     <div className="mt-4 text-center text-sm">
                         Don&apos;t have an account?{" "}
                         <Link href="/signup" className="underline">
-                            Sign up
+                            {
+                                status === "loading" ? "Loading..." : "Sign up"
+                            }
                         </Link>
                     </div>
                     {message && (

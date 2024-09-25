@@ -1,4 +1,4 @@
-
+'use client';
 import {
     AlertDialog,
     AlertDialogContent,
@@ -10,9 +10,17 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
 
 
 function AlertDia() {
+    const Router = useRouter();
+    const handeChange1 = () => {
+        Router.push('/signup');
+    }
+    const handleChange2 = () => {
+        Router.push('/login');
+    }
     return (
         <AlertDialog defaultOpen={true}>
             <AlertDialogContent>
@@ -23,16 +31,16 @@ function AlertDia() {
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <Link href="/signup">
+                    <div onClick={handeChange1}>
                         <Button variant="outline">signup</Button>
-                    </Link>
-                    <Link href="/login">
+                    </div>
+                    <div onClick={handleChange2}>
                         <Button>Login</Button>
-                    </Link>
+                    </div>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
     )
 }
 
-export default AlertDia;
+export default AlertDia; 

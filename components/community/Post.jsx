@@ -46,7 +46,7 @@ export default function Post({ title, description, image, name, time, idPost, li
                 const res = await fetch(`/api/post/like?idPost=${idPost}&idUser=${idUser}`, {
                     method: 'GET'
                 })
-                console.log(res);
+                console.log("check liked post res:",res);
                 if (res.ok) {
                     setLiked(true);
                 }
@@ -64,7 +64,7 @@ export default function Post({ title, description, image, name, time, idPost, li
                 method: 'POST',
                 body: JSON.stringify({ idPost: idPost, idUser: session.user.id, comment: comment })
             })
-            console.log(res);
+            console.log("handle comment res: ",res);
             if (res.ok) {
                 toast(
                     {
@@ -291,7 +291,7 @@ export default function Post({ title, description, image, name, time, idPost, li
 
 
 function Comment({ comment, user }) {
-    const [userData, setUserData] = useState([]);
+    const [userData, setUserData] = useState({});
     const getUser = async () => {
         const res = await fetch('api/user', {
             method: 'POST',
