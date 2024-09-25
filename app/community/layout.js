@@ -3,43 +3,7 @@
 import Head from 'next/head';
 import Nav from '@/components/community/Nav';
 import { useSession } from 'next-auth/react';
-
-import {
-    AlertDialog,
-    AlertDialogAction,
-
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-import Link from 'next/link';
-
-export function AlertDia() {
-    return (
-        <AlertDialog defaultOpen={true}>
-            <AlertDialogContent>
-                <AlertDialogHeader>
-                    <AlertDialogTitle>You are not logged in!</AlertDialogTitle>
-                    <AlertDialogDescription>
-                        Try to log in to access this feature.
-                    </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                    <Link href="/signup">
-                        <Button variant="outline">signup</Button>
-                    </Link>
-                    <Link href="/login">
-                        <Button>Login</Button>
-                    </Link>
-                </AlertDialogFooter>
-            </AlertDialogContent>
-        </AlertDialog>
-    )
-}
+import AlertDia from '@/components/ui/AlertDia';
 
 
 

@@ -26,8 +26,8 @@ const Hero = () => {
             <Image
                 src="/assets/images/Recipe book-pana.svg" // Replace with your image path
                 alt="Delicious food"
-                className="z-10 w-auto h-auto"
-                width={500}
+                className="z-10 "
+                width={600}
                 height={500}
             />
         </div>

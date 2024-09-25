@@ -5,13 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import DarkModeToggle from "@/components/DarkModeToggle";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -47,18 +41,20 @@ const Navbar = () => {
                         </Link>
                     </div>
                     <div className="hidden sm:flex sm:items-center">
-                        {isMounted && status === "authenticated" ? (
-                            <Button className="mr-4" onClick={() => signOut({ callbackUrl: "/login" })}>Logout</Button>
-                        ) : (
-                            <DropdownMenu color="primary">
-                                <Button className="w-full">Login / Signup</Button>
-                                <DropdownMenuTrigger></DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                    <Link href="/login"><DropdownMenuItem>Login</DropdownMenuItem></Link>
-                                    <Link href="/signup"><DropdownMenuItem>Signup</DropdownMenuItem></Link>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        )}
+                        <DarkModeToggle />
+                        {
+                            status === "authenticated" && isMounted ? (
+                                <div className="ml-3 relative">
+                                    <Button className="bg-transparent text-gray-900 dark:text-white" onClick={() => signOut()}>Logout</Button>
+                                </div>
+                            ) : (
+                                <div className="ml-3 relative">
+                                    <Link href="/login" className="dark:text-black  ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primary-dark">
+                                        Login
+                                    </Link>
+                                </div>
+                            )
+                        }
                     </div>
                     <div className="-mr-2 flex items-center sm:hidden">
                         <button
@@ -98,13 +94,13 @@ const Navbar = () => {
                         Contact
                     </Link>
 
-                    <DropdownMenu color="primary">
+                    {/* <DropdownMenu color="primary">
                         <DropdownMenuTrigger><Button className="w-full">Login / Signup</Button></DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <Link href="/login"><DropdownMenuItem>Login</DropdownMenuItem></Link>
                             <Link href="/signup"><DropdownMenuItem>Signup</DropdownMenuItem></Link>
                         </DropdownMenuContent>
-                    </DropdownMenu>
+                    </DropdownMenu> */}
                 </div>
             </div>
         </nav>
